@@ -32,6 +32,10 @@ public class Category implements Serializable {
         Name = name;
     }
 
+    public Category(String name) {
+        Name = name;
+    }
+
     public int getId() {
         return Id;
     }
