@@ -2,12 +2,24 @@ package com.gabrielprata.cursouml.cursouml.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 //Serializable diz que os objetos da classe podem ser convertidos para uma sequência de bites
 //Serve para converter os objetos em arquivos e trafegar em rede
-//(É uma exigência do JAVA)
-
+//(É uma exigência do Java)
+//Uso o @Entity para dizer ao Java que esta classe é uma entidade do JPA (Para impotar a classe para o BD)
+@Entity
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    //Criando uma tabela no banco de dados com base nos atributos da classe
+    //Marcações para importar o atributo para o banco de dados
+    //Uso o IDENTITY para gerar as chaves primárias
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
     private String Name;
 
