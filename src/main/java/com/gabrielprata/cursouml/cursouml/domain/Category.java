@@ -15,9 +15,9 @@ import javax.persistence.Id;
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //Criando uma tabela no banco de dados com base nos atributos da classe
-    //Marcações para importar o atributo para o banco de dados
-    //Uso o IDENTITY para gerar as chaves primárias
+    // Criando uma tabela no banco de dados com base nos atributos da classe
+    // Marcações para importar o atributo para o banco de dados
+    // Uso o IDENTITY para gerar as chaves primárias
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
