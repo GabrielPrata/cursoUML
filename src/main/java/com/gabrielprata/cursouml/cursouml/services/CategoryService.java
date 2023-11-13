@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gabrielprata.cursouml.cursouml.domain.Category;
+import com.gabrielprata.cursouml.cursouml.exception.ObjectNotFoundException;
 import com.gabrielprata.cursouml.cursouml.repositories.CategoryRepository;
 
 //Anotação para indicar que a classe é um Service
@@ -16,8 +17,9 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repo;
 
-    public Category search(int id) {
+    public Category search(Integer id) {
         Optional<Category> obj = repo.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Category.class.getName()));
     }
 }

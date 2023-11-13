@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -25,6 +27,8 @@ public class Product implements Serializable {
     private String Name;
     private double Price;
 
+    //Omite a lista de categorias, pois já foi referenciado do outro lado (classe Category)
+    @JsonBackReference
     //Notações usadas para fazer o relacionamento muitos para muitos no banco de dados
     //name = "" - Nome da tabela que irá fazer o relacionamento
     //joinColumns = "" - Nome da chave estrangeira

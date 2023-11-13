@@ -22,6 +22,7 @@ public class CategoryResource {
     //O tipo ResponseEntity (Tipo do Spring) já encapsula informações de uma resposta HTTP REST
     //A interrogação serve para dizer que ali cabe qualquer tipo, pois a busca pode não ser bem sucedida
     public ResponseEntity<?> find(@PathVariable int id) {
+        //O handler lança a resposta HTTP adequada caso haja algum erro (nesse caso 404)
         
         Category obj = service.search(id);
         return ResponseEntity.ok().body(obj);
