@@ -8,39 +8,48 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-//Serializable diz que os objetos da classe podem ser convertidos para uma sequência de bites
-//Serve para converter os objetos em arquivos e trafegar em rede
-//(É uma exigência do Java)
-//Uso o @Entity para dizer ao Java que esta classe é uma entidade do JPA (Para impotar a classe para o BD)
+import org.hibernate.annotations.ManyToAny;
+
 @Entity
-public class Category implements Serializable {
+public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    // Criando uma tabela no banco de dados com base nos atributos da classe
-    // Marcações para importar o atributo para o banco de dados
-    // Uso o IDENTITY para gerar as chaves primárias
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
+
     private String Name;
+    private double Price;
 
-    //Apenas digo que esse é "o outro lado" do mapeamento feito em categories
-    @ManyToMany(mappedBy = "categories")
-    private List<Product> products = new ArrayList<>();
+    //Notações usadas para fazer o relacionamento muitos para muitos no banco de dados
+    //name = "" - Nome da tabela que irá fazer o relacionamento
+    //joinColumns = "" - Nome da chave estrangeira
+    //inverseJoinColumns = "" - Nome da outra FK que referencia a categoria
+    @ManyToMany
+    @JoinTable(
+        name="PRODUCT_CATEGORY",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories = new ArrayList<>();
 
-    public Category() {
+    public Product(){
 
     }
 
-    public Category(int id, String name) {
+    public Product(int id, String name, double price) {
         Id = id;
         Name = name;
+        Price = price;
     }
 
-    public Category(String name) {
+    public Product(String name, double price) {
         Name = name;
+        Price = price;
     }
 
     public int getId() {
@@ -59,12 +68,20 @@ public class Category implements Serializable {
         Name = name;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public double getPrice() {
+        return Price;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setPrice(double price) {
+        Price = price;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
@@ -83,7 +100,7 @@ public class Category implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Category other = (Category) obj;
+        Product other = (Product) obj;
         if (Id != other.Id)
             return false;
         return true;
