@@ -8,9 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.gabrielprata.cursouml.cursouml.domain.Category;
+import com.gabrielprata.cursouml.cursouml.domain.City;
 import com.gabrielprata.cursouml.cursouml.domain.Product;
+import com.gabrielprata.cursouml.cursouml.domain.UF;
 import com.gabrielprata.cursouml.cursouml.repositories.CategoryRepository;
+import com.gabrielprata.cursouml.cursouml.repositories.CityRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.ProductRepository;
+import com.gabrielprata.cursouml.cursouml.repositories.UFRepository;
 
 @SpringBootApplication
 public class CursoumlApplication implements CommandLineRunner {
@@ -20,6 +24,12 @@ public class CursoumlApplication implements CommandLineRunner {
 
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private UFRepository ufRepository;
+
+	@Autowired
+	private CityRepository cityRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumlApplication.class, args);
@@ -44,5 +54,19 @@ public class CursoumlApplication implements CommandLineRunner {
 
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3));
+
+		UF uf1 = new UF("Minas Gerais");
+		UF uf2 = new UF("São Paulo");
+
+		City c1 = new City("Uberlândia", uf1);
+		City c2 = new City("São Paulo", uf2);
+		City c3 = new City("Campinas", uf2);
+
+		uf1.getCities().addAll(Arrays.asList(c1));
+		uf2.getCities().addAll(Arrays.asList(c2, c3));
+
+		ufRepository.saveAll((Arrays.asList(uf1, uf2)));
+		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
 	}
 }
