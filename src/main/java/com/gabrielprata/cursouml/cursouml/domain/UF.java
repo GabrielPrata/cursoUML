@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class UF implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -18,12 +20,14 @@ public class UF implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
     private String Name;
-    
-    //Qual foi o atributo "do outro lado" que fez o mapeamento
-    @OneToMany(mappedBy = "Uf")
-    private List<City> Cities = new ArrayList();
 
-    public UF(){}
+    @JsonBackReference
+    // Qual foi o atributo "do outro lado" que fez o mapeamento
+    @OneToMany(mappedBy = "Uf")
+    private List<City> Cities = new ArrayList<>();
+
+    public UF() {
+    }
 
     public UF(int id, String name) {
         Id = id;
@@ -80,5 +84,4 @@ public class UF implements Serializable {
         return true;
     }
 
-    
 }
