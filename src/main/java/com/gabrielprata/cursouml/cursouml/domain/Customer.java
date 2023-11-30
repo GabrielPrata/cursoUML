@@ -29,7 +29,6 @@ public class Customer implements Serializable {
     private String Document;
     private int Type;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "Customer")
     private List<Address> Addresses = new ArrayList<>();
 

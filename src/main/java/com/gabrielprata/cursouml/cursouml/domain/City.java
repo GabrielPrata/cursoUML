@@ -20,7 +20,6 @@ public class City implements Serializable {
     private int Id;
     private String Name;
 
-    @JsonManagedReference
     // Relacionamento vários para um
     @ManyToOne
     // Defino o nome da chave estrangeira da tabela cidade

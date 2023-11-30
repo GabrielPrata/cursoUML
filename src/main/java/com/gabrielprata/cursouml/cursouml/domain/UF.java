@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class UF implements Serializable {
@@ -21,9 +22,10 @@ public class UF implements Serializable {
     private int Id;
     private String Name;
 
-    @JsonBackReference
+    
     // Qual foi o atributo "do outro lado" que fez o mapeamento
     @OneToMany(mappedBy = "Uf")
+    @JsonIgnore
     private List<City> Cities = new ArrayList<>();
 
     public UF() {
@@ -53,7 +55,8 @@ public class UF implements Serializable {
     public void setName(String name) {
         Name = name;
     }
-
+    
+    @JsonIgnore
     public List<City> getCities() {
         return Cities;
     }
