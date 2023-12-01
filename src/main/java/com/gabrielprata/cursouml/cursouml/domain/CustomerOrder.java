@@ -2,6 +2,8 @@ package com.gabrielprata.cursouml.cursouml.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -32,6 +35,9 @@ public class CustomerOrder implements Serializable {
     @JoinColumn(name = "address_delivery_id")
     private Address DeliveryAddres;
 
+    @OneToMany(mappedBy = "Id.Order")
+    private Set<OrderItem> Itens = new HashSet<>();
+
     public CustomerOrder() {
 
     }
@@ -47,6 +53,14 @@ public class CustomerOrder implements Serializable {
         Instant = instant;
         Customer = customer;
         DeliveryAddres = deliveryAddres;
+    }
+
+    public Set<OrderItem> getItens() {
+        return Itens;
+    }
+
+    public void setItens(Set<OrderItem> itens) {
+        Itens = itens;
     }
 
     public int getId() {

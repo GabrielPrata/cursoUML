@@ -2,7 +2,9 @@ package com.gabrielprata.cursouml.cursouml.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -25,22 +28,40 @@ public class Product implements Serializable {
     private String Name;
     private double Price;
 
-    //Omite a lista de categorias, pois já foi referenciado do outro lado (classe Category)
+    // Omite a lista de categorias, pois já foi referenciado do outro lado (classe
+    // Category)
     @JsonBackReference
-    //Notações usadas para fazer o relacionamento muitos para muitos no banco de dados
-    //name = "" - Nome da tabela que irá fazer o relacionamento
-    //joinColumns = "" - Nome da chave estrangeira
-    //inverseJoinColumns = "" - Nome da outra FK que referencia a categoria
+    // Notações usadas para fazer o relacionamento muitos para muitos no banco de
+    // dados
+    // name = "" - Nome da tabela que irá fazer o relacionamento
+    // joinColumns = "" - Nome da chave estrangeira
+    // inverseJoinColumns = "" - Nome da outra FK que referencia a categoria
     @ManyToMany
-    @JoinTable(
-        name="PRODUCT_CATEGORY",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+    @JoinTable(name = "PRODUCT_CATEGORY", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    public Product(){
+    @OneToMany(mappedBy = "Id.Product")
+    private Set<OrderItem> Itens = new HashSet<>();
 
+    public List<CustomerOrder> getOrders(){
+        List<CustomerOrder> list = new ArrayList<>();
+        for(OrderItem x : Itens){
+            list.add(x.getOrder());
+        }
+
+        return list;
+    }
+
+    public Product() {
+
+    }
+
+    public Set<OrderItem> getItens() {
+        return Itens;
+    }
+
+    public void setItens(Set<OrderItem> itens) {
+        Itens = itens;
     }
 
     public Product(int id, String name, double price) {

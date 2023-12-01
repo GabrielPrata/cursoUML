@@ -3,7 +3,6 @@ package com.gabrielprata.cursouml.cursouml;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
-import org.apache.tomcat.jni.Sockaddr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +13,7 @@ import com.gabrielprata.cursouml.cursouml.domain.Category;
 import com.gabrielprata.cursouml.cursouml.domain.City;
 import com.gabrielprata.cursouml.cursouml.domain.Customer;
 import com.gabrielprata.cursouml.cursouml.domain.CustomerOrder;
+import com.gabrielprata.cursouml.cursouml.domain.OrderItem;
 import com.gabrielprata.cursouml.cursouml.domain.Payment;
 import com.gabrielprata.cursouml.cursouml.domain.PaymentWithBankSlip;
 import com.gabrielprata.cursouml.cursouml.domain.PaymentWithCard;
@@ -28,6 +28,7 @@ import com.gabrielprata.cursouml.cursouml.repositories.CustomerOrderRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.ProductRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.UFRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.CustomerRepository;
+import com.gabrielprata.cursouml.cursouml.repositories.OrderItemRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.PaymentRepository;
 
 @SpringBootApplication
@@ -56,6 +57,9 @@ public class CursoumlApplication implements CommandLineRunner {
 
 	@Autowired
 	private PaymentRepository paymentRepository;
+
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumlApplication.class, args);
@@ -106,7 +110,7 @@ public class CursoumlApplication implements CommandLineRunner {
 		customerRepository.saveAll(Arrays.asList(cus1));
 		addressRepository.saveAll(Arrays.asList(ad1, ad2));
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm"); 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 		CustomerOrder order1 = new CustomerOrder(sdf.parse("30/09/2023 10:32"), cus1, ad1);
 		CustomerOrder order2 = new CustomerOrder(sdf.parse("10/10/2023 19:35"), cus1, ad2);
 
@@ -120,5 +124,19 @@ public class CursoumlApplication implements CommandLineRunner {
 
 		orderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+
+		OrderItem oi1 = new OrderItem(order1, p1, 0.00, 1, p1.getPrice());
+		OrderItem oi2 = new OrderItem(order1, p3, 0.00, 2, p3.getPrice());
+		OrderItem oi3 = new OrderItem(order2, p2, 100.00, 1, p2.getPrice());
+
+		order1.getItens().addAll(Arrays.asList(oi1, oi2));
+		order2.getItens().addAll(Arrays.asList(oi3));
+
+		p1.getItens().addAll(Arrays.asList(oi1));
+		p2.getItens().addAll(Arrays.asList(oi2));
+		p3.getItens().addAll(Arrays.asList(oi3));
+
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));
+
 	}
 }
