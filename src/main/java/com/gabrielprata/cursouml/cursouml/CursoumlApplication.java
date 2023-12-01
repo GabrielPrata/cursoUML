@@ -1,7 +1,9 @@
 package com.gabrielprata.cursouml.cursouml;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import org.apache.tomcat.jni.Sockaddr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,15 +13,22 @@ import com.gabrielprata.cursouml.cursouml.domain.Address;
 import com.gabrielprata.cursouml.cursouml.domain.Category;
 import com.gabrielprata.cursouml.cursouml.domain.City;
 import com.gabrielprata.cursouml.cursouml.domain.Customer;
+import com.gabrielprata.cursouml.cursouml.domain.CustomerOrder;
+import com.gabrielprata.cursouml.cursouml.domain.Payment;
+import com.gabrielprata.cursouml.cursouml.domain.PaymentWithBankSlip;
+import com.gabrielprata.cursouml.cursouml.domain.PaymentWithCard;
 import com.gabrielprata.cursouml.cursouml.domain.Product;
 import com.gabrielprata.cursouml.cursouml.domain.UF;
 import com.gabrielprata.cursouml.cursouml.domain.enums.CustomerType;
+import com.gabrielprata.cursouml.cursouml.domain.enums.PaymentStatus;
 import com.gabrielprata.cursouml.cursouml.repositories.AddressRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.CategoryRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.CityRepository;
+import com.gabrielprata.cursouml.cursouml.repositories.CustomerOrderRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.ProductRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.UFRepository;
 import com.gabrielprata.cursouml.cursouml.repositories.CustomerRepository;
+import com.gabrielprata.cursouml.cursouml.repositories.PaymentRepository;
 
 @SpringBootApplication
 public class CursoumlApplication implements CommandLineRunner {
@@ -41,6 +50,12 @@ public class CursoumlApplication implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private CustomerOrderRepository orderRepository;
+
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumlApplication.class, args);
@@ -91,5 +106,19 @@ public class CursoumlApplication implements CommandLineRunner {
 		customerRepository.saveAll(Arrays.asList(cus1));
 		addressRepository.saveAll(Arrays.asList(ad1, ad2));
 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm"); 
+		CustomerOrder order1 = new CustomerOrder(sdf.parse("30/09/2023 10:32"), cus1, ad1);
+		CustomerOrder order2 = new CustomerOrder(sdf.parse("10/10/2023 19:35"), cus1, ad2);
+
+		Payment pay1 = new PaymentWithCard(PaymentStatus.QUITADO, order1, 6);
+		order1.setPayment(pay1);
+
+		Payment pay2 = new PaymentWithBankSlip(PaymentStatus.PENDENTE, order2, sdf.parse("20/10/2023 18:30"), null);
+		order2.setPayment(pay2);
+
+		cus1.getOrders().addAll(Arrays.asList(order1, order2));
+
+		orderRepository.saveAll(Arrays.asList(order1, order2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 	}
 }
