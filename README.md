@@ -1,4 +1,3 @@
-![image](https://github.com/GabrielPrata/cursoUML/assets/49907324/43a79069-d402-461c-924c-a357e68a4aec)# cursoUML
 Diretório destinado ao projeto em JAVA do curso de modelagem de dados UML.
 Foi utilizado o seguinte modelo conceitual abaixo:
 <br>
