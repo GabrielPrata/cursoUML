@@ -15,7 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Product implements Serializable {
@@ -30,7 +30,7 @@ public class Product implements Serializable {
 
     // Omite a lista de categorias, pois já foi referenciado do outro lado (classe
     // Category)
-    @JsonBackReference
+    @JsonIgnore
     // Notações usadas para fazer o relacionamento muitos para muitos no banco de
     // dados
     // name = "" - Nome da tabela que irá fazer o relacionamento
@@ -40,9 +40,13 @@ public class Product implements Serializable {
     @JoinTable(name = "PRODUCT_CATEGORY", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "Id.Product")
     private Set<OrderItem> Itens = new HashSet<>();
 
+    //Uso o @JsonIgnore pois tudo que começa com "get" é serializado
+    //Evitando assim a serialização cíclica
+    @JsonIgnore
     public List<CustomerOrder> getOrders(){
         List<CustomerOrder> list = new ArrayList<>();
         for(OrderItem x : Itens){
@@ -56,6 +60,7 @@ public class Product implements Serializable {
 
     }
 
+    @JsonIgnore
     public Set<OrderItem> getItens() {
         return Itens;
     }

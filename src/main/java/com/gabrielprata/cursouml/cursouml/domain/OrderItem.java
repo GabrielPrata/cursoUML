@@ -5,11 +5,14 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //Notação usada pra indicar que é um ID embutido em um tipo auxiliar
+    //Notação usada pra indicar que é um ID embutido em um tipo auxiliar`
+    @JsonIgnore
     @EmbeddedId
     private OrderItemPK Id = new OrderItemPK();
 
@@ -29,10 +32,11 @@ public class OrderItem implements Serializable {
         Price = price;
     }
 
+    @JsonIgnore
     public CustomerOrder getOrder(){
         return Id.getOrder();
     }
-
+    
     public Product geProduct(){
         return Id.getProduct();
     }

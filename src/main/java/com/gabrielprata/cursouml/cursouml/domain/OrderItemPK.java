@@ -6,6 +6,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //Notação utilizada para dizer que essa classe é um subtipo
 @Embeddable
 public class OrderItemPK implements Serializable{
@@ -19,6 +21,7 @@ public class OrderItemPK implements Serializable{
     @JoinColumn(name="product_id")
     private Product Product;
     
+    @JsonIgnore
     public CustomerOrder getOrder() {
         return Order;
     }

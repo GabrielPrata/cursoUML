@@ -10,23 +10,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabrielprata.cursouml.cursouml.domain.enums.PaymentStatus;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Payment implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     private int Id;
     private int Status;
-
+    
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     @MapsId
     private CustomerOrder Order;
 
-    public Payment(){
+    public Payment() {
 
     }
 
@@ -51,6 +53,7 @@ public abstract class Payment implements Serializable {
         Status = status.getCod();
     }
 
+    @JsonIgnore
     public CustomerOrder getOrder() {
         return Order;
     }
@@ -81,5 +84,4 @@ public abstract class Payment implements Serializable {
         return true;
     }
 
-    
 }

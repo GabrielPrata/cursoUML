@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class CustomerOrder implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -22,8 +24,11 @@ public class CustomerOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
-    private Date Instant;
 
+    //Utilizo a notação @JsonFormat para formatar os mili segundos para a uma data
+    @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
+    private Date Instant;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "Order")
     private Payment Payment;
 
@@ -86,7 +91,7 @@ public class CustomerOrder implements Serializable {
     public void setPayment(Payment payment) {
         Payment = payment;
     }
-
+    
     public Customer getCustomer() {
         return Customer;
     }

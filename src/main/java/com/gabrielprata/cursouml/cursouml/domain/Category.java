@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 //Serializable diz que os objetos da classe podem ser convertidos para uma sequência de bites
 //Serve para converter os objetos em arquivos e trafegar em rede
@@ -31,7 +30,7 @@ public class Category implements Serializable {
     //Apenas digo que esse é "o outro lado" do mapeamento feito em categories
     @ManyToMany(mappedBy = "categories")
     //@JsonManagedReference serve para trazer os objetos referenciados a classe
-    @JsonManagedReference
+
     private List<Product> products = new ArrayList<>();
 
     public Category() {
